@@ -15,13 +15,17 @@ impl ArrayDeque {
         }
     }
 
+    pub fn size(&self) -> usize {
+        self.n
+    }
+
     pub fn get(&self, i: usize) -> u64 {
         self.a[(self.j + i) % self.a.len()]
     }
 
     pub fn set(&mut self, i: usize, x: u64) -> u64 {
         let len = self.a.len();
-        let y = self.a[(self.j + i) & len];
+        let y = self.a[(self.j + i) % len];
         self.a[(self.j + i) % len] = x;
         y
     }
