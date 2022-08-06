@@ -1,6 +1,6 @@
 use crate::array::array_stack::ArrayStack;
 
-struct RootishArrayStack {
+pub struct RootishArrayStack {
     blocks: Vec<ArrayStack>,
     n: usize,
 }

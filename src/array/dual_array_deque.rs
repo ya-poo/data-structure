@@ -1,6 +1,6 @@
 use crate::array::array_deque::ArrayDeque;
 
-struct DualArrayDeque {
+pub struct DualArrayDeque {
     front: ArrayDeque,
     back: ArrayDeque,
 }
