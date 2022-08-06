@@ -21,8 +21,10 @@ impl ArrayStack {
         self.backing_array[i]
     }
 
-    pub fn set(&mut self, i: usize, x: u64) {
-        self.backing_array[i] = x
+    pub fn set(&mut self, i: usize, x: u64) -> u64 {
+        let y = self.backing_array[i];
+        self.backing_array[i] = x;
+        y
     }
 
     pub fn add(&mut self, i: usize, x: u64) {
