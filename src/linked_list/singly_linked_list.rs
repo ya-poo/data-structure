@@ -31,7 +31,7 @@ impl SLList {
     pub fn push_front(&mut self, x: i64) {
         let new_node = SLList::new_node(x);
         match self.head.take() {
-            None => self.tail = Some(new_node.clone()),
+            None => self.tail = Some(Rc::clone(&new_node)),
             Some(link) => new_node.borrow_mut().next = Some(link),
         }
         self.n += 1;
@@ -41,8 +41,8 @@ impl SLList {
     pub fn push_back(&mut self, x: i64) {
         let new_node = SLList::new_node(x);
         match self.tail.take() {
-            None => self.head = Some(new_node.clone()),
-            Some(link) => link.borrow_mut().next = Some(new_node.clone()),
+            None => self.head = Some(Rc::clone(&new_node)),
+            Some(link) => link.borrow_mut().next = Some(Rc::clone(&new_node)),
         }
         self.n += 1;
         self.tail = Some(new_node)
