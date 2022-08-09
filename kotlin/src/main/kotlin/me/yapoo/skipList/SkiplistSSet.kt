@@ -3,7 +3,7 @@ package me.yapoo.skipList
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class SkipListSSet(
+class SkiplistSSet(
     private var n: Int = 0,
     private var h: Int = 0,
     var sentinel: Node = Node(0, 32),

@@ -1,30 +1,28 @@
 package me.yapoo.skipList
 
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class SkipListSSetTest {
+class SkiplistSSetTest {
     @Test
     fun test() {
-        val set = SkipListSSet()
-        for (i in 1..10) {
-            set.add(i)
-            assertEquals(i, set.size())
+        val set = SkiplistSSet()
+        val expected = List(1000) { Random.nextInt() }.toSet()
+        expected.forEach {
+            set.add(it)
         }
-        for (i in 1..10) {
-            assertTrue { set.exist(i) }
+        expected.forEach {
+            assertTrue { set.exist(it) }
+            assertFalse { set.add(it) }
         }
-        for (i in 1..10) {
-            assertFalse { set.add(i) }
+        assertEquals(expected.size, set.size())
+        expected.forEach {
+            assertTrue { set.remove(it) }
+            assertFalse { set.exist(it) }
         }
-        assertEquals(10, set.size())
-
-        for (i in 1..10) {
-            assertTrue { set.remove(i) }
-            assertFalse { set.exist(i) }
-            assertEquals(10 - i, set.size())
-        }
+        assertEquals(0, set.size())
     }
 }
