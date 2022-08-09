@@ -25,5 +25,9 @@ class SkiplistListTest {
         expected2.withIndex().forEach { (i, value) ->
             assertEquals(list.get(i), value)
         }
+
+        expected2.withIndex().forEach { (_, value) ->
+            assertEquals(value, list.remove(0))
+        }
     }
 }

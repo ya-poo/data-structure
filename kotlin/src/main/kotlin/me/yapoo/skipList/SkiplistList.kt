@@ -39,6 +39,29 @@ class SkiplistList {
         addNode(i, node)
     }
 
+    fun remove(i: Int): Int {
+        var u = sentinel
+        var j = -1
+        var x = 0
+        for (r in h downTo 0) {
+            while (u.next[r] != null && j + u.length[r] < i) {
+                j += u.length[r]
+                u = u.next[r]!!
+            }
+            u.length[r]--
+            if (u.next[r] != null && j + u.length[r] + 1 == i) {
+                x = u.next[r]!!.x
+                u.length[r] += u.next[r]!!.length[r]
+                u.next[r] = u.next[r]!!.next[r]
+                if (u == sentinel && u.next[r] == null) {
+                    h--
+                }
+            }
+        }
+        n--
+        return x
+    }
+
     private fun findPredNode(i: Int): Node {
         var u = sentinel
         var j = -1
