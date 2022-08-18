@@ -5,7 +5,7 @@ import kotlin.math.max
 
 class BinarySearchTree<T : Comparable<*>> {
 
-    var root: Node<T>? = null
+    private var root: Node<T>? = null
 
     fun find(x: T): Node<T>? {
         var w = root
@@ -61,7 +61,7 @@ class BinarySearchTree<T : Comparable<*>> {
         return true
     }
 
-    // x 以下の最大の値を持つノードを返却
+    // x を持つノード または x 未満の最大の数を持つ葉ノードを返却
     private fun findLast(x: T): Node<T>? {
         var current = root
         var prev: Node<T>? = null
@@ -104,33 +104,33 @@ class BinarySearchTree<T : Comparable<*>> {
             }
         }
     }
-}
 
-class Node<T : Comparable<*>>(
-    var value: T,
-    var parent: Node<T>? = null,
-    var left: Node<T>? = null,
-    var right: Node<T>? = null,
-) {
-    fun depth(): Int {
-        if (this.parent == null) {
-            return 0
+    class Node<T : Comparable<*>>(
+        var value: T,
+        var parent: Node<T>? = null,
+        var left: Node<T>? = null,
+        var right: Node<T>? = null,
+    ) {
+        fun depth(): Int {
+            if (this.parent == null) {
+                return 0
+            }
+
+            return 1 + this.parent!!.depth()
         }
 
-        return 1 + this.parent!!.depth()
-    }
+        fun size(): Int {
+            val left = left?.size() ?: 0
+            val right = right?.size() ?: 0
 
-    fun size(): Int {
-        val left = left?.size() ?: 0
-        val right = right?.size() ?: 0
+            return 1 + left + right
+        }
 
-        return 1 + left + right
-    }
+        fun height(): Int {
+            val left = left?.height() ?: 0
+            val right = right?.height() ?: 0
 
-    fun height(): Int {
-        val left = left?.height() ?: 0
-        val right = right?.height() ?: 0
-
-        return 1 + max(left, right)
+            return 1 + max(left, right)
+        }
     }
 }
