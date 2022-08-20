@@ -40,12 +40,11 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
             return false
         }
 
-        val new = factory(u.value)
-        new.parent = parent
+        u.parent = parent
         if (comp < 0) {
-            parent.left = new
+            parent.left = u
         } else {
-            parent.right = new
+            parent.right = u
         }
         return true
     }
@@ -165,36 +164,29 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
         val root = root ?: return "null"
 
         val nodes = createNodeList(root, 0)
-        val indents = mutableSetOf<Int>()
         val indentSize = 4
-        val out = mutableListOf<String>()
-        nodes.forEach { (node, d) ->
+        var previous: String? = null
+        return nodes.map { (node, d) ->
             val depth = abs(d)
             if (depth == 0) {
-                out.add("${node?.value}")
+                node.toString()
             } else {
                 val indent = indentSize * depth
                 val branch = if (node != null) {
-                    if (node.parent?.left == node) "└" else "├"
+                    if (node.parent?.right == node) "├── " else "└── "
                 } else {
-                    if (d < 0) "└" else "├"
+                    if (d >= 0) "├── " else "└── "
                 }
-                val print = (" ".repeat(indent - indentSize) + branch + "── ${node?.value}").toCharArray()
+                val print = (" ".repeat(indent - indentSize) + branch + node.toString()).toCharArray()
 
-                if (out.isNotEmpty()) {
-                    indents.filter {
-                        it <= indent - indentSize
-                    }.forEach {
-                        if (listOf('└', '├', '│').contains(out.last().getOrNull(it - indentSize))) {
-                            print[it - indentSize] = '│'
-                        }
+                previous?.withIndex()?.forEach { (index, c) ->
+                    if (listOf('└', '├', '│').contains(c) && index < print.size && print[index] == ' ') {
+                        print[index] = '│'
                     }
                 }
-                indents.add(indent)
-                out.add(String(print))
-            }
-        }
-        return out.reversed().joinToString("\n")
+                String(print)
+            }.also { previous = it }
+        }.reversed().joinToString("\n")
     }
 
     private fun createNodeList(
@@ -237,5 +229,9 @@ open class BSTNode<T : Comparable<*>, Node : BSTNode<T, Node>>(
         val right = right?.height() ?: 0
 
         return 1 + max(left, right)
+    }
+
+    override fun toString(): String {
+        return value.toString()
     }
 }
