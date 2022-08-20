@@ -59,5 +59,9 @@ class Treap<T : Comparable<*>> : BinarySearchTree<T, Treap.Node<T>>(
         right: Node<T>? = null,
         parent: Node<T>? = null,
         val priority: Int = Random.nextInt(),
-    ) : BSTNode<T, Node<T>>(value, left, right, parent)
+    ) : BSTNode<T, Node<T>>(value, left, right, parent) {
+        override fun toString(): String {
+            return "$value ($priority)"
+        }
+    }
 }
