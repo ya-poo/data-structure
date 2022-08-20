@@ -1,5 +1,6 @@
 package me.yapoo.tree
 
+import kotlin.math.abs
 import kotlin.math.max
 
 open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
@@ -158,6 +159,55 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
             root = w
             root?.parent = null
         }
+    }
+
+    override fun toString(): String {
+        val root = root ?: return "null"
+
+        val nodes = createNodeList(root, 0)
+        val indents = mutableSetOf<Int>()
+        val indentSize = 4
+        val out = mutableListOf<String>()
+        nodes.forEach { (node, d) ->
+            val depth = abs(d)
+            if (depth == 0) {
+                out.add("${node?.value}")
+            } else {
+                val indent = indentSize * depth
+                val branch = if (node != null) {
+                    if (node.parent?.left == node) "└" else "├"
+                } else {
+                    if (d < 0) "└" else "├"
+                }
+                val print = (" ".repeat(indent - indentSize) + branch + "── ${node?.value}").toCharArray()
+
+                if (out.isNotEmpty()) {
+                    indents.filter {
+                        it <= indent - indentSize
+                    }.forEach {
+                        if (listOf('└', '├', '│').contains(out.last().getOrNull(it - indentSize))) {
+                            print[it - indentSize] = '│'
+                        }
+                    }
+                }
+                indents.add(indent)
+                out.add(String(print))
+            }
+        }
+        return out.reversed().joinToString("\n")
+    }
+
+    private fun createNodeList(
+        u: Node,
+        depth: Int,
+    ): List<Pair<Node?, Int>> {
+        val left = u.left?.let { createNodeList(it, depth + 1) }
+            ?: if (u.right != null) listOf(Pair(null, -(depth + 1))) else emptyList()
+
+        val right = u.right?.let { createNodeList(it, depth + 1) }
+            ?: if (u.left != null) listOf(Pair(null, depth + 1)) else emptyList()
+
+        return left + right + listOf(Pair(u, depth))
     }
 }
 
