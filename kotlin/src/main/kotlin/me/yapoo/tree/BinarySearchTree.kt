@@ -5,7 +5,7 @@ import kotlin.math.max
 
 class BinarySearchTree<T : Comparable<*>> {
 
-    private var root: Node<T>? = null
+    var root: Node<T>? = null
 
     fun find(x: T): Node<T>? {
         var w = root
