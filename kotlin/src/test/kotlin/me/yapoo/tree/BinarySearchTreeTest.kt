@@ -34,28 +34,44 @@ class BinarySearchTreeTest {
     @Test
     fun tree_structure() {
         val tree = BinarySearchTree<Int, Node<Int>> { x -> Node(x) }
-        val values = listOf(7, 3, 11, 1, 5, 9, 13, 0, 2, 4, 6, 8, 10, 12, 14)
+        val values = listOf(10, 17, 4, 0, 5, 16, 18, 6, 13, 12, 11, 3, 14, 1, 2, 9, 15, 8, 7, 19)
 
         values.forEach {
             tree.add(it)
         }
 
         val expected = """
-            7
-            ├── 11
-            │   ├── 13
-            │   │   ├── 14
-            │   │   └── 12
-            │   └── 9
-            │       ├── 10
-            │       └── 8
-            └── 3
+            10
+            ├── 17
+            │   ├── 18
+            │   │   ├── 19
+            │   │   └── null
+            │   └── 16
+            │       ├── null
+            │       └── 13
+            │           ├── 14
+            │           │   ├── 15
+            │           │   └── null
+            │           └── 12
+            │               ├── null
+            │               └── 11
+            └── 4
                 ├── 5
                 │   ├── 6
-                │   └── 4
-                └── 1
-                    ├── 2
-                    └── 0
+                │   │   ├── 9
+                │   │   │   ├── null
+                │   │   │   └── 8
+                │   │   │       ├── null
+                │   │   │       └── 7
+                │   │   └── null
+                │   └── null
+                └── 0
+                    ├── 3
+                    │   ├── null
+                    │   └── 1
+                    │       ├── 2
+                    │       └── null
+                    └── null
         """.trimIndent()
 
         assertEquals(expected, tree.toString())
