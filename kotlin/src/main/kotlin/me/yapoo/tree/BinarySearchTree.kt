@@ -2,12 +2,13 @@ package me.yapoo.tree
 
 import kotlin.math.max
 
+open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
+    private val factory: (T) -> Node
+) {
 
-class BinarySearchTree<T : Comparable<*>> {
+    var root: Node? = null
 
-    var root: Node<T>? = null
-
-    fun find(x: T): Node<T>? {
+    open fun find(x: T): Node? {
         var w = root
         while (w != null) {
             val comp = compareValues(x, w.value)
@@ -22,19 +23,23 @@ class BinarySearchTree<T : Comparable<*>> {
         return null
     }
 
-    fun add(x: T): Boolean {
-        val parent = findLast(x)
+    open fun add(x: T): Boolean {
+        return add(factory(x))
+    }
+
+    fun add(u: Node): Boolean {
+        val parent = findLast(u.value)
         if (parent == null) {
-            root = Node(x)
+            root = u
             return true
         }
 
-        val comp = compareValues(x, parent.value)
+        val comp = compareValues(u.value, parent.value)
         if (comp == 0) {
             return false
         }
 
-        val new = Node(x)
+        val new = factory(u.value)
         new.parent = parent
         if (comp < 0) {
             parent.left = new
@@ -44,12 +49,13 @@ class BinarySearchTree<T : Comparable<*>> {
         return true
     }
 
-    fun remove(x: T): Boolean {
+    open fun remove(x: T): Boolean {
         val node = find(x) ?: return false
+
         if (node.left == null || node.right == null) {
             splice(node)
         } else {
-            var w: Node<T>? = node.right
+            var w = node.right
             while (w?.left != null) {
                 w = w.left
             }
@@ -61,10 +67,11 @@ class BinarySearchTree<T : Comparable<*>> {
         return true
     }
 
-    // x を持つノード または x 未満の最大の数を持つ葉ノードを返却
-    private fun findLast(x: T): Node<T>? {
+    // x を持つノード または x 未満の最大の値、または x より大きい最小のノードを返却
+    // 空の木の場合は null を返却
+    fun findLast(x: T): Node? {
         var current = root
-        var prev: Node<T>? = null
+        var prev: Node? = null
         while (current != null) {
             prev = current
 
@@ -82,7 +89,7 @@ class BinarySearchTree<T : Comparable<*>> {
     }
 
     // 葉または子を 1 つだけ持つノードを削除する
-    private fun splice(u: Node<T>) {
+    fun splice(u: Node) {
         val s = if (u.left != null) {
             u.left
         } else {
@@ -105,32 +112,80 @@ class BinarySearchTree<T : Comparable<*>> {
         }
     }
 
-    class Node<T : Comparable<*>>(
-        var value: T,
-        var parent: Node<T>? = null,
-        var left: Node<T>? = null,
-        var right: Node<T>? = null,
-    ) {
-        fun depth(): Int {
-            if (this.parent == null) {
-                return 0
+    fun rotateLeft(u: Node) {
+        val w = u.right ?: return
+        w.parent = u.parent
+
+        val p = w.parent
+        if (p != null) {
+            if (p.left == u) {
+                p.left = w
+            } else {
+                p.right = w
             }
+        }
+        u.right = w.left
+        if (u.right != null) {
+            u.right?.parent = u
+        }
+        u.parent = w
+        w.left = u
+        if (u == root) {
+            root = w
+            root?.parent = null
+        }
+    }
 
-            return 1 + this.parent!!.depth()
+    fun rotateRight(u: Node) {
+        val w = u.left ?: return
+        w.parent = u.parent
+
+        val p = w.parent
+        if (p != null) {
+            if (w.parent?.left == u) {
+                w.parent?.left = w
+            } else {
+                w.parent?.right = w
+            }
+        }
+        u.left = w.right
+        if (u.left != null) {
+            u.left?.parent = u
+        }
+        u.parent = w
+        w.right = u
+        if (u == root) {
+            root = w
+            root?.parent = null
+        }
+    }
+}
+
+open class BSTNode<T : Comparable<*>, Node : BSTNode<T, Node>>(
+    var value: T,
+    var left: Node? = null,
+    var right: Node? = null,
+    var parent: Node? = null,
+) {
+    fun depth(): Int {
+        if (this.parent == null) {
+            return 0
         }
 
-        fun size(): Int {
-            val left = left?.size() ?: 0
-            val right = right?.size() ?: 0
+        return 1 + this.parent!!.depth()
+    }
 
-            return 1 + left + right
-        }
+    fun size(): Int {
+        val left = left?.size() ?: 0
+        val right = right?.size() ?: 0
 
-        fun height(): Int {
-            val left = left?.height() ?: 0
-            val right = right?.height() ?: 0
+        return 1 + left + right
+    }
 
-            return 1 + max(left, right)
-        }
+    fun height(): Int {
+        val left = left?.height() ?: 0
+        val right = right?.height() ?: 0
+
+        return 1 + max(left, right)
     }
 }

@@ -8,9 +8,16 @@ import kotlin.test.assertTrue
 
 class BinarySearchTreeTest {
 
+    class Node<T : Comparable<*>>(
+        value: T,
+        left: Node<T>? = null,
+        right: Node<T>? = null,
+        parent: Node<T>? = null,
+    ) : BSTNode<T, Node<T>>(value, left, right, parent)
+
     @Test
     fun test() {
-        val tree = BinarySearchTree<Int>()
+        val tree = BinarySearchTree<Int, Node<Int>> { x -> Node(x) }
         val values = List(1000) { it }.shuffled()
 
         values.forEach {
@@ -26,7 +33,7 @@ class BinarySearchTreeTest {
 
     @Test
     fun tree_structure() {
-        val tree = BinarySearchTree<Int>()
+        val tree = BinarySearchTree<Int, Node<Int>> { x -> Node(x) }
         val values = listOf(7, 3, 11, 1, 5, 9, 13, 0, 2, 4, 6, 8, 10, 12, 14)
 
         values.forEach {
