@@ -90,6 +90,10 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
 
     // 葉または子を 1 つだけ持つノードを削除する
     fun splice(u: Node) {
+        if (u.left != null && u.right != null) {
+            throw IllegalArgumentException("u の子が 2 つあります。 u = $u\n$this")
+        }
+
         val s = if (u.left != null) {
             u.left
         } else {
