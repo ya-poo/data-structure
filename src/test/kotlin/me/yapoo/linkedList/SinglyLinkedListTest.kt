@@ -10,7 +10,7 @@ class SinglyLinkedListTest {
         val values = List(1000) { it }
         val list = SinglyLinkedList<Int>()
 
-        values.withIndex().forEach { (value, index) ->
+        values.withIndex().forEach { (index, value) ->
             list.pushFront(value)
             assertEquals(index + 1, list.size())
         }
@@ -23,7 +23,7 @@ class SinglyLinkedListTest {
     fun push_back_and_pop() {
         val values = List(1000) { it }
         val list = SinglyLinkedList<Int>()
-        values.withIndex().forEach { (value, index) ->
+        values.withIndex().forEach { (index, value) ->
             list.pushBack(value)
             assertEquals(index + 1, list.size())
         }
