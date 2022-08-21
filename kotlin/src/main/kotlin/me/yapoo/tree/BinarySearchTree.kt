@@ -172,19 +172,15 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
                 node.toString()
             } else {
                 val indent = indentSize * depth
-                val branch = if (node != null) {
-                    if (node.parent?.right == node) "├── " else "└── "
-                } else {
-                    if (d >= 0) "├── " else "└── "
-                }
-                val print = (" ".repeat(indent - indentSize) + branch + node.toString()).toCharArray()
+                val branch = if (d >= 0) "├── " else "└── "
+                val line = (" ".repeat(indent - indentSize) + branch + node.toString()).toCharArray()
 
                 previous?.withIndex()?.forEach { (index, c) ->
-                    if (listOf('└', '├', '│').contains(c) && index < print.size && print[index] == ' ') {
-                        print[index] = '│'
+                    if (listOf('└', '├', '│').contains(c) && index < line.size && line[index] == ' ') {
+                        line[index] = '│'
                     }
                 }
-                String(print)
+                String(line)
             }.also { previous = it }
         }.reversed().joinToString("\n")
     }
@@ -199,7 +195,8 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
         val right = u.right?.let { createNodeList(it, depth + 1) }
             ?: if (u.left != null) listOf(Pair(null, depth + 1)) else emptyList()
 
-        return left + right + listOf(Pair(u, depth))
+        val d = if (u.parent?.left == u) -depth else depth
+        return left + right + listOf(Pair(u, d))
     }
 }
 
