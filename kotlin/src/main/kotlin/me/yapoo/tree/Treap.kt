@@ -7,10 +7,13 @@ class Treap<T : Comparable<*>> : BinarySearchTree<T, Treap.Node<T>>(
 ) {
 
     override fun add(x: T): Boolean {
-        val new = Node(value = x, priority = Random.nextInt())
-        val result = super.add(new)
+        return add(Node(x))
+    }
+
+    override fun add(u: Node<T>): Boolean {
+        val result = super.add(u)
         if (result) {
-            bubbleUp(new)
+            bubbleUp(u)
             return true
         }
         return false

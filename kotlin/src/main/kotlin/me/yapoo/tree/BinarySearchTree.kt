@@ -9,7 +9,7 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
 
     var root: Node? = null
 
-    open fun find(x: T): Node? {
+    fun find(x: T): Node? {
         var w = root
         while (w != null) {
             val comp = compareValues(x, w.value)
@@ -28,7 +28,7 @@ open class BinarySearchTree<T : Comparable<*>, Node : BSTNode<T, Node>>(
         return add(factory(x))
     }
 
-    fun add(u: Node): Boolean {
+    open fun add(u: Node): Boolean {
         val parent = findLast(u.value)
         if (parent == null) {
             root = u

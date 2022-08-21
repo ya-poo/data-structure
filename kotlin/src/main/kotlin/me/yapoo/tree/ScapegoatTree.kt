@@ -10,13 +10,16 @@ class ScapegoatTree<T : Comparable<*>> : BinarySearchTree<T, ScapegoatTree.Node<
     private var n = 0
 
     override fun add(x: T): Boolean {
-        val depth = addWithDepth(Node(x))
+        return add(Node(x))
+    }
+
+    override fun add(u: Node<T>): Boolean {
+        val depth = addWithDepth(u)
         if (depth == -1) {
             return false
         }
         q++
         n++
-        val u = find(x)!!
         if (depth > log32(q)) {
             var w = u.parent!!
             var a = w.size()
