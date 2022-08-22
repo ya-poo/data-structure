@@ -1,13 +1,12 @@
 package me.yapoo.sort
 
 import org.junit.jupiter.api.Test
-import kotlin.random.Random
 import kotlin.test.assertEquals
 
 class SortTest {
     @Test
     fun test() {
-        val values = List(1000) { Random.nextInt() }
+        val values = List(1000) { it }.shuffled()
 
         assertSorted(values, values.mergeSort())
         assertSorted(values, values.quickSort())
