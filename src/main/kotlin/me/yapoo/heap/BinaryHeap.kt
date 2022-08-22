@@ -2,9 +2,19 @@ package me.yapoo.heap
 
 import kotlin.math.max
 
-class BinaryHeap<T : Comparable<*>> {
-    private var a: MutableList<T?> = mutableListOf()
-    private var n = 0
+class BinaryHeap<T : Comparable<*>>(
+    list: List<T> = emptyList()
+) {
+    var a: MutableList<T?>
+    var n: Int
+
+    init {
+        a = list.toMutableList()
+        n = a.size
+        for (i in n / 2 - 1 downTo 0) {
+            trickleDown(i)
+        }
+    }
 
     private fun left(i: Int) = 2 * i + 1
     private fun right(i: Int) = 2 * i + 2
@@ -47,8 +57,8 @@ class BinaryHeap<T : Comparable<*>> {
         }
     }
 
-    private fun trickleDown() {
-        var cur = 0
+    fun trickleDown(i: Int = 0) {
+        var cur = i
         do {
             var j = -1
             val r = right(cur)
