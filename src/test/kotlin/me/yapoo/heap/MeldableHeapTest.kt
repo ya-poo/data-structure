@@ -1,9 +1,10 @@
 package me.yapoo.heap
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.util.*
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class MeldableHeapTest {
 
@@ -18,12 +19,14 @@ class MeldableHeapTest {
             assertEquals(index + 1, heap.size())
             assertHeap(heap)
         }
-        println(heap)
         values.sorted().withIndex().forEach { (index, value) ->
             assertEquals(value, heap.pop())
             assertEquals(n - index - 1, heap.size())
             assertHeap(heap)
         }
+
+        assertNull(heap.pop())
+        assertEquals(0, heap.size())
     }
 
     private fun assertHeap(heap: MeldableHeap<Int>) {

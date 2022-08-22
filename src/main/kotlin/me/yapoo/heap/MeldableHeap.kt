@@ -20,7 +20,10 @@ class MeldableHeap<T : Comparable<*>> : BinaryTree<T, MeldableHeap.Node<T>>() {
     }
 
     fun pop(): T? {
-        val x = root?.value
+        if (n == 0) {
+            return null
+        }
+        val x = root!!.value
         root = merge(root?.left, root?.right)
         root?.parent = null
         n--
