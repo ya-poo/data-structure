@@ -8,7 +8,7 @@ class BinaryHeapTest {
     @Test
     fun test() {
         val heap = BinaryHeap<Int>()
-        val n = 10000
+        val n = 1000
         val values = List(n) { it }.shuffled()
 
         values.withIndex().forEach { (index, value) ->
@@ -29,11 +29,11 @@ class BinaryHeapTest {
         val left = 2 * i + 1
         val right = 2 * i + 1
         if (left < n) {
-            assertTrue { array[i].unwrap() < array[left].unwrap() }
+            assertTrue { array[i]!! < array[left]!! }
             assertHeap(left, heap)
         }
         if (right < n) {
-            assertTrue { array[i].unwrap() < array[right].unwrap() }
+            assertTrue { array[i]!! < array[right]!! }
             assertHeap(right, heap)
         }
     }

@@ -3,7 +3,7 @@ package me.yapoo.heap
 import kotlin.math.max
 
 class BinaryHeap<T : Comparable<*>> {
-    private var a: MutableList<Node<T>> = mutableListOf()
+    private var a: MutableList<T?> = mutableListOf()
     private var n = 0
 
     private fun left(i: Int) = 2 * i + 1
@@ -14,7 +14,7 @@ class BinaryHeap<T : Comparable<*>> {
         if (n + 1 > a.size) {
             resize()
         }
-        a[n] = Node.Value(x)
+        a[n] = x
         n++
         bubbleUp(n - 1)
     }
@@ -23,7 +23,7 @@ class BinaryHeap<T : Comparable<*>> {
         if (n == 0) {
             return null
         }
-        val x = a[0].unwrap()
+        val x = a[0]!!
         a[0] = a[n - 1]
         n--
         trickleDown()
@@ -40,7 +40,7 @@ class BinaryHeap<T : Comparable<*>> {
     private fun bubbleUp(i: Int) {
         var cur = i
         var p = parent(cur)
-        while (cur > 0 && compareValues(a[cur].unwrap(), a[p].unwrap()) < 0) {
+        while (cur > 0 && compareValues(a[cur]!!, a[p]!!) < 0) {
             swap(cur, p)
             cur = p
             p = parent(cur)
@@ -53,14 +53,14 @@ class BinaryHeap<T : Comparable<*>> {
             var j = -1
             val r = right(cur)
             val l = left(cur)
-            if (r < n && compareValues(a[r].unwrap(), a[cur].unwrap()) < 0) {
-                j = if (compareValues(a[l].unwrap(), a[r].unwrap()) < 0) {
+            if (r < n && compareValues(a[r]!!, a[cur]!!) < 0) {
+                j = if (compareValues(a[l]!!, a[r]!!) < 0) {
                     l
                 } else {
                     r
                 }
             } else {
-                if (l < n && compareValues(a[l].unwrap(), a[cur].unwrap()) < 0) {
+                if (l < n && compareValues(a[l]!!, a[cur]!!) < 0) {
                     j = l
                 }
             }
@@ -76,7 +76,7 @@ class BinaryHeap<T : Comparable<*>> {
             if (index < n) {
                 a[index]
             } else {
-                Node.Empty
+                null
             }
         }
         a = new
@@ -86,21 +86,5 @@ class BinaryHeap<T : Comparable<*>> {
         val memo = a[i]
         a[i] = a[j]
         a[j] = memo
-    }
-
-    sealed class Node<out T : Comparable<*>> {
-
-        data class Value<T : Comparable<*>>(
-            val value: T
-        ) : Node<T>()
-
-        object Empty : Node<Nothing>()
-
-        fun unwrap(): T {
-            return when (this) {
-                is Value -> value
-                is Empty -> throw Exception()
-            }
-        }
     }
 }
