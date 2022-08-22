@@ -1,5 +1,6 @@
 package me.yapoo.sort
 
+import me.yapoo.util.swap
 import kotlin.random.Random
 
 fun <T : Comparable<*>> List<T>.quickSort(): List<T> {
@@ -37,10 +38,4 @@ private fun <T : Comparable<*>> quickSort(
     }
     quickSort(list, i, p - i + 1)
     quickSort(list, q, n - (q - i))
-}
-
-private fun <T> MutableList<T>.swap(i: Int, j: Int) {
-    val memo = this[i]
-    this[i] = this[j]
-    this[j] = memo
 }
