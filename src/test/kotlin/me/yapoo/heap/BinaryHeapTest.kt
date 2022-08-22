@@ -2,6 +2,7 @@ package me.yapoo.heap
 
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class BinaryHeapTest {
@@ -21,6 +22,9 @@ class BinaryHeapTest {
             assertEquals(n - index - 1, heap.size())
             assertHeap(0, heap)
         }
+
+        assertNull(heap.pop())
+        assertEquals(0, heap.size())
     }
 
     private fun assertHeap(i: Int, heap: BinaryHeap<Int>) {
