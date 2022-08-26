@@ -5,7 +5,7 @@ import kotlin.math.max
 
 abstract class BinaryTree<T, Node : BTNode<T, Node>> {
 
-    var root: Node? = null
+    open var root: Node? = null
 
     override fun toString(): String {
         val root = root ?: return "null"
